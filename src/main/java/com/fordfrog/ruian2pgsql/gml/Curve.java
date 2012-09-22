@@ -21,6 +21,7 @@
  */
 package com.fordfrog.ruian2pgsql.gml;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import java.util.List;
  *
  * @author fordfrog
  */
-public class Curve extends AbstractGeometry implements GeometryWithPoints {
+public class Curve extends AbstractGeometry implements GeometryWithPoints, CurvedGeometry<Line> {
 
     /**
      * Circular string points.
@@ -51,5 +52,27 @@ public class Curve extends AbstractGeometry implements GeometryWithPoints {
         sbString.append(")");
 
         return sbString.toString();
+    }
+
+    @Override
+    public Line linearize(final double precision) {
+        if (points.size() < 3) {
+            throw new RuntimeException(MessageFormat.format(
+                "Invalid Curve definition: need at least 3 control points, but got {0}.",
+                points.size()));
+        }
+
+        final Line line = new Line();
+        line.setSrid(getSrid());
+        line.addPoint(points.get(0));
+        for (int i = 2; i < points.size(); i = i + 2) {
+            List<Point> linePoints = GeometryUtils.linearizeArc(precision,
+                        points.get(i - 2), points.get(i - 1), points.get(i));
+            for (final Point point : linePoints.subList(1, linePoints.size())) {
+                line.addPoint(point);
+            }
+        }
+
+        return line;
     }
 }

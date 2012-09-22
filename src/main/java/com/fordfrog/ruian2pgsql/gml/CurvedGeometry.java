@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Miroslav Šulc
+ * Copyright 2012 Petr Morávek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,46 +21,19 @@
  */
 package com.fordfrog.ruian2pgsql.gml;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
- * Line.
+ * Interface for geometry that may contain arcs.
  *
- * @author fordfrog
+ * @author xificurk
  */
-public class Line extends AbstractGeometry implements GeometryWithPoints {
+public interface CurvedGeometry<T extends Geometry> {
 
     /**
-     * List of points.
-     */
-    private final List<Point> points = new ArrayList<>(100);
-
-    @Override
-    public void addPoint(final Point point) {
-        points.add(point);
-    }
-
-    /**
-     * Getter for {@link #points}.
+     * Creates linear approximation of the geometry.
      *
-     * @return {@link #points}
+     * @param precision of linear approximation
+     *
+     * @return linear approximation of the geometry
      */
-    public List<Point> getPoints() {
-        return Collections.unmodifiableList(points);
-    }
-
-    @Override
-    public String toWKT() {
-        final StringBuilder sbString = new StringBuilder(points.size() * 20);
-
-        WKTUtils.appendSrid(sbString, getSrid());
-
-        sbString.append("LINESTRING(");
-        WKTUtils.appendPoints(sbString, points);
-        sbString.append(")");
-
-        return sbString.toString();
-    }
+    T linearize(final double precision);
 }

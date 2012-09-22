@@ -69,6 +69,19 @@ public class Config {
      * Path to file where runtime messages should be logged.
      */
     private static Path logFilePath;
+    /**
+     * Precision used for linear approximation of curved objects.
+     */
+    private static double linearPrecision = 0.01;
+
+    /**
+     * Getter for {@link #linearPrecision}.
+     *
+     * @return {@link #linearPrecision}
+     */
+    public static double getLinearPrecision() {
+        return linearPrecision;
+    }
 
     /**
      * Getter for {@link #inputDirPath}.
