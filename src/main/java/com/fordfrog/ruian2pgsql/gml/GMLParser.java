@@ -161,9 +161,9 @@ public class GMLParser {
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
      */
-    private static MultiSurface parseMultiSurface(final XMLStreamReader reader)
+    private static MultiPolygon parseMultiSurface(final XMLStreamReader reader)
             throws XMLStreamException {
-        final MultiSurface multiPolygon = new MultiSurface();
+        final MultiPolygon multiPolygon = new MultiPolygon();
         multiPolygon.setSrid(getSrid(reader));
 
         while (reader.hasNext()) {
@@ -196,15 +196,15 @@ public class GMLParser {
      *
      * @param reader XML stream reader
      *
-     * @return parsed multicurve
+     * @return parsed multiline
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
      */
-    private static MultiCurve parseMultiCurve(final XMLStreamReader reader)
+    private static MultiLine parseMultiCurve(final XMLStreamReader reader)
             throws XMLStreamException {
-        final MultiCurve multiCurve = new MultiCurve();
-        multiCurve.setSrid(getSrid(reader));
+        final MultiLine multiLine = new MultiLine();
+        multiLine.setSrid(getSrid(reader));
 
         while (reader.hasNext()) {
             final int event = reader.next();
@@ -213,7 +213,7 @@ public class GMLParser {
                 case XMLStreamReader.START_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "curveMember", reader)) {
-                        multiCurve.addSegment(parseCurveMember(reader));
+                        multiLine.addSegment(parseCurveMember(reader));
                     } else {
                         throwUnsupportedElement(reader);
                     }
@@ -222,14 +222,14 @@ public class GMLParser {
                 case XMLStreamReader.END_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "MultiCurve", reader)) {
-                        return multiCurve;
+                        return multiLine;
                     } else {
                         throwUnexpectedElement(reader);
                     }
             }
         }
 
-        return multiCurve;
+        return multiLine;
     }
 
     /**
@@ -300,7 +300,7 @@ public class GMLParser {
      *                            stream.
      */
     private static void parseSurfaceMember(final XMLStreamReader reader,
-            final MultiSurface multiPolygon) throws XMLStreamException {
+            final MultiPolygon multiPolygon) throws XMLStreamException {
         while (reader.hasNext()) {
             final int event = reader.next();
 
@@ -329,6 +329,8 @@ public class GMLParser {
      * Parses point.
      *
      * @param reader XML stream reader
+     *
+     * @return parsed point
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
@@ -367,6 +369,8 @@ public class GMLParser {
      * Parses polygon.
      *
      * @param reader XML stream reader
+     *
+     * @return parsed polygon
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
@@ -410,7 +414,7 @@ public class GMLParser {
      *
      * @param reader XML stream reader
      *
-     * @return parsed line string
+     * @return parsed ring
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
@@ -427,7 +431,7 @@ public class GMLParser {
                 case XMLStreamReader.START_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "LinearRing", reader)) {
-                        geometry = parseLinearRing(reader, "LinearRing");
+                        geometry = parseLine(reader, "LinearRing");
                     } else if (XMLUtils.isSameElement(
                             Namespaces.GML, "Ring", reader)) {
                         geometry = parseRing(reader);
@@ -450,20 +454,20 @@ public class GMLParser {
     }
 
     /**
-     * Parses LinearRing.
+     * Parses LinearRing or LineString.
      *
      * @param reader       XML stream reader
      * @param endLocalName end local name
      *
-     * @return parsed line string
+     * @return parsed line
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
      */
-    private static LineString parseLinearRing(final XMLStreamReader reader,
+    private static Line parseLine(final XMLStreamReader reader,
             final String endLocalName) throws XMLStreamException {
-        final LineString lineString = new LineString();
-        lineString.setSrid(getSrid(reader));
+        final Line line = new Line();
+        line.setSrid(getSrid(reader));
 
         while (reader.hasNext()) {
             final int event = reader.next();
@@ -472,7 +476,7 @@ public class GMLParser {
                 case XMLStreamReader.START_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "posList", reader)) {
-                        parsePosList(reader, lineString);
+                        parsePosList(reader, line);
                     } else {
                         throwUnsupportedElement(reader);
                     }
@@ -481,14 +485,14 @@ public class GMLParser {
                 case XMLStreamReader.END_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, endLocalName, reader)) {
-                        return lineString;
+                        return line;
                     } else {
                         throwUnexpectedElement(reader);
                     }
             }
         }
 
-        return lineString;
+        return line;
     }
 
     /**
@@ -496,7 +500,7 @@ public class GMLParser {
      *
      * @param reader XML stream reader
      *
-     * @return parsed ring
+     * @return parsed compound cuve
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
@@ -553,7 +557,7 @@ public class GMLParser {
                 case XMLStreamReader.START_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "LineString", reader)) {
-                        geometry = parseLinearRing(reader, "LineString");
+                        geometry = parseLine(reader, "LineString");
                     } else if (XMLUtils.isSameElement(
                             Namespaces.GML, "Curve", reader)) {
                         geometry = parseCurve(reader);
@@ -667,15 +671,15 @@ public class GMLParser {
      *
      * @param reader XML stream reader
      *
-     * @return parsed circular string
+     * @return parsed curve
      *
      * @throws XMLStreamException Thrown if problem occurred while reading XML
      *                            stream.
      */
-    private static CircularString parseArcString(final XMLStreamReader reader)
+    private static Curve parseArcString(final XMLStreamReader reader)
             throws XMLStreamException {
-        CircularString circularString = new CircularString();
-        circularString.setSrid(getSrid(reader));
+        final Curve curve = new Curve();
+        curve.setSrid(getSrid(reader));
 
         while (reader.hasNext()) {
             final int event = reader.next();
@@ -684,7 +688,7 @@ public class GMLParser {
                 case XMLStreamReader.START_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "posList", reader)) {
-                        parsePosList(reader, circularString);
+                        parsePosList(reader, curve);
                     } else {
                         throwUnsupportedElement(reader);
                     }
@@ -693,14 +697,14 @@ public class GMLParser {
                 case XMLStreamReader.END_ELEMENT:
                     if (XMLUtils.isSameElement(
                             Namespaces.GML, "ArcString", reader)) {
-                        return circularString;
+                        return curve;
                     } else {
                         throwUnexpectedElement(reader);
                     }
             }
         }
 
-        return circularString;
+        return curve;
     }
 
     /**
@@ -715,7 +719,7 @@ public class GMLParser {
      */
     private static Circle parseCircle(final XMLStreamReader reader)
             throws XMLStreamException {
-        Circle circle = new Circle();
+        final Circle circle = new Circle();
         circle.setSrid(getSrid(reader));
 
         while (reader.hasNext()) {

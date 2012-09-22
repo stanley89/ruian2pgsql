@@ -97,9 +97,9 @@ public class Point extends AbstractGeometry {
 
         sbString.append("POINT(");
         sbString.append(x);
-        sbString.append(' ');
+        sbString.append(" ");
         sbString.append(y);
-        sbString.append(')');
+        sbString.append(")");
 
         return sbString.toString();
     }

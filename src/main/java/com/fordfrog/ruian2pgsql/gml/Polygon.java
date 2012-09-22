@@ -92,11 +92,11 @@ public class Polygon extends AbstractGeometry {
         sbString.append(outer.toWKT());
 
         for (final Geometry inner : inners) {
-            sbString.append(',');
+            sbString.append(",");
             sbString.append(inner.toWKT());
         }
 
-        sbString.append(')');
+        sbString.append(")");
 
         return sbString.toString().replace("LINESTRING", "");
     }

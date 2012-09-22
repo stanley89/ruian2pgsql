@@ -48,7 +48,7 @@ public class MultiPoint extends AbstractGeometry implements GeometryWithPoints {
 
         sbString.append("MULTIPOINT(");
         WKTUtils.appendPoints(sbString, points);
-        sbString.append(')');
+        sbString.append(")");
 
         return sbString.toString();
     }
