@@ -49,7 +49,7 @@ public class Curve extends AbstractGeometry implements GeometryWithPoints, Curve
 
         sbString.append("CIRCULARSTRING(");
         WKTUtils.appendPoints(sbString, points);
-        sbString.append(")");
+        sbString.append(')');
 
         return sbString.toString();
     }

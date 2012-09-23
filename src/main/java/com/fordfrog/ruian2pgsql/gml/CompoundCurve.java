@@ -60,13 +60,13 @@ public class CompoundCurve extends AbstractGeometry implements CurvedGeometry<Li
             if (first) {
                 first = false;
             } else {
-                sbString.append(",");
+                sbString.append(',');
             }
 
             sbString.append(segment.toWKT());
         }
 
-        sbString.append(")");
+        sbString.append(')');
 
         return sbString.toString();
     }

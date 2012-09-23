@@ -62,13 +62,13 @@ public class MultiPolygon extends AbstractGeometry implements CurvedGeometry<Mul
             if (first) {
                 first = false;
             } else {
-                sbString.append(",");
+                sbString.append(',');
             }
 
             sbString.append(polygon.toWKT().replaceFirst("^POLYGON", ""));
         }
 
-        sbString.append(")");
+        sbString.append(')');
 
         return sbString.toString();
     }

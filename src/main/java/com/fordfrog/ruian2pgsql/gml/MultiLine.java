@@ -70,7 +70,7 @@ public class MultiLine extends AbstractGeometry implements CurvedGeometry<MultiL
             sbString.append(segment.toWKT().replaceFirst("^LINESTRING", ""));
         }
 
-        sbString.append(")");
+        sbString.append(')');
 
         return sbString.toString();
     }

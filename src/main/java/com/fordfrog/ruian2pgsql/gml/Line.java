@@ -59,7 +59,7 @@ public class Line extends AbstractGeometry implements GeometryWithPoints {
 
         sbString.append("LINESTRING(");
         WKTUtils.appendPoints(sbString, points);
-        sbString.append(")");
+        sbString.append(')');
 
         return sbString.toString();
     }
