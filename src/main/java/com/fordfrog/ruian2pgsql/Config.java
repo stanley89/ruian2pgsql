@@ -57,6 +57,11 @@ public class Config {
      */
     private static boolean convertToEWKT;
     /**
+     * Whether geometries should be converted to EWKT and linearized before they
+     * are stored in database.
+     */
+    private static boolean convertToLinearEWKT;
+    /**
      * Whether debug information should be output.
      */
     private static boolean debug;
@@ -208,6 +213,24 @@ public class Config {
      */
     public static void setConvertToEWKT(final boolean convertToEWKT) {
         Config.convertToEWKT = convertToEWKT;
+    }
+
+    /**
+     * Getter for {@link #convertToLinearEWKT}.
+     *
+     * @return {@link #convertToLinearEWKT}
+     */
+    public static boolean isConvertToLinearEWKT() {
+        return convertToLinearEWKT;
+    }
+
+    /**
+     * Setter for {@link #convertToLinearEWKT}.
+     *
+     * @param convertToLinearEWKT {@link #convertToLinearEWKT}
+     */
+    public static void setConvertToLinearEWKT(final boolean convertToLinearEWKT) {
+        Config.convertToLinearEWKT = convertToLinearEWKT;
     }
 
     /**

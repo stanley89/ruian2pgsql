@@ -685,7 +685,11 @@ public class Utils {
             final String endLocalName) throws XMLStreamException {
         final String result;
 
-        if (Config.isConvertToEWKT()) {
+        if (Config.isConvertToLinearEWKT()) {
+            result =
+                    GMLParser.parseLinearized(reader, endNamespace,
+                            endLocalName, Config.getLinearPrecision()).toWKT();
+        } else if (Config.isConvertToEWKT()) {
             result =
                     GMLParser.parse(reader, endNamespace, endLocalName).toWKT();
         } else {

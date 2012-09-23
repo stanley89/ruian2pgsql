@@ -6,6 +6,11 @@ Where:
         EWKT and then stored in database, otherwise original GML strings are
         stored in database (choose this option based on Postgis level of GML
         implementation)
+--convert-to-linear-ewkt
+        if enabled, GML strings from the source XML files are first converted to
+        EWKT, curves are approximated by linear geometries and then stored in
+        database, otherwise original GML strings are stored in database (choose
+        this option based on Postgis level of GML implementation)
 --create-tables
         creates database tables for the data (if tables with the same name
         already exists, it is first dropped)

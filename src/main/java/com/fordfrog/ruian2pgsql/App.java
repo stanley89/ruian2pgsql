@@ -66,6 +66,10 @@ public class App {
                 case "--convert-to-ewkt":
                     Config.setConvertToEWKT(true);
                     break;
+                case "--convert-to-linear-ewkt":
+                    Config.setConvertToEWKT(true);
+                    Config.setConvertToLinearEWKT(true);
+                    break;
                 case "--create-tables":
                     Config.setCreateTables(true);
                     break;
