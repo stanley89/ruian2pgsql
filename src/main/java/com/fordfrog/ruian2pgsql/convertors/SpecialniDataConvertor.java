@@ -53,7 +53,7 @@ public class SpecialniDataConvertor extends AbstractConvertor {
     public SpecialniDataConvertor(final Connection con) throws SQLException {
         super(NAMESPACE, "Data");
 
-         convertorVolebniOkrsek = new CollectionConvertor(
+         convertorVolebniOkrsek = new SpecialniCollectionConvertor(
                 "VolebniOkrsek", "VO", new VOConvertor(con));
         
     }
