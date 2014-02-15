@@ -48,12 +48,12 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
      * SQL statement for checking whether the item already exists.
      */
     private static final String SQL_EXISTS =
-            "SELECT 1 FROM rn_vo WHERE kod = ?";
+            "SELECT 1 FROM rn_volebni_okrsek WHERE kod = ?";
     /**
      * SQL statement for insertion of new item.obec_kod
      */
     private static final String SQL_INSERT = "INSERT INTO rn_volebni_okrsek "
-            + "(cislo, nespravny, momc_kod = ?, obec_kod, plati_od, nz_id_globalni, "
+            + "(cislo, nespravny, momc_kod, obec_kod, plati_od, nz_id_globalni, "
             + "id_trans_ruian, definicni_bod, hranice, kod) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, %FUNCTION%(?), %FUNCTION%(?), ?)";
     /**
@@ -61,7 +61,7 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
      */
     private static final String SQL_UPDATE = "UPDATE rn_volebni_okrsek "
             + "SET cislo = ?, nespravny = ?, momc_kod = ?,"
-            + "obec_kod = ?, plati_od = ?, nz_id_globalni = ?, id_trans_ruian = ?"
+            + "obec_kod = ?, plati_od = ?, nz_id_globalni = ?, id_trans_ruian = ?,"
             + "definicni_bod = %FUNCTION%(?), hranice = %FUNCTION%(?),"
             + "item_timestamp = timezone('utc', now()), deleted = false "
             + "WHERE kod = ? AND id_trans_ruian < ?";
@@ -77,7 +77,7 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
      */
     private static final String SQL_UPDATE_NO_GIS = "UPDATE rn_volebni_okrsek "
             + "SET cislo = ?, nespravny = ?, momc_kod = ?,"
-            + "obec_kod = ?, plati_od = ?, nz_id_globalni = ?, id_trans_ruian = ?"
+            + "obec_kod = ?, plati_od = ?, nz_id_globalni = ?, id_trans_ruian = ?,"
             + "item_timestamp = timezone('utc', now()), deleted = false "
             + "WHERE kod = ? AND id_trans_ruian < ?";
 
@@ -90,7 +90,7 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
      *                      database.
      */
     public VOConvertor(final Connection con) throws SQLException {
-        super(VolebniOkrsek.class, Namespaces.VOLEBNI_OKRSEK_INT_TYPY, "VolebniOkrsek", con,
+        super(VolebniOkrsek.class, Namespaces.SPECIALNI_VYMENNY_FORMAT_TYPY, "VO", con,
                 SQL_EXISTS, SQL_INSERT, SQL_UPDATE, SQL_INSERT_NO_GIS,
                 SQL_UPDATE_NO_GIS);
     }

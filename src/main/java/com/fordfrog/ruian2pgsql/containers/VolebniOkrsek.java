@@ -109,7 +109,8 @@ public class VolebniOkrsek implements ItemWithDefinicniBod, ItemWithHranice {
     }
 
     public Integer getMomcKod() {
-        return momcKod;
+        if (momcKod==null) return 0;
+	return momcKod;
     }
 
     public void setMomcKod(final Integer momcKod) {
