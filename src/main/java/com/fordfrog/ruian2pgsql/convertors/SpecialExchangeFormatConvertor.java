@@ -72,9 +72,9 @@ public class SpecialExchangeFormatConvertor extends AbstractConvertor {
                     case "Data":
                         dataConvertor.convert(reader);
                         break;
-                    case "Hlavicka":
-                        hlavickaConvertor.convert(reader);
-                        break;
+   //                 case "Hlavicka":
+   //                     hlavickaConvertor.convert(reader);
+   //                     break;
                     default:
                         XMLUtils.processUnsupported(reader);
                 }
