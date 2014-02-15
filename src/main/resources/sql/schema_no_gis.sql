@@ -2,6 +2,8 @@ DROP VIEW IF EXISTS ruian_stats;
 DROP VIEW IF EXISTS ruian_stats_full;
 
 DROP TABLE IF EXISTS hlavicka;
+DROP TABLE IF EXISTS specialni_hlavicka;
+
 DROP TABLE IF EXISTS rn_stat;
 DROP TABLE IF EXISTS rn_region_soudrznosti;
 DROP TABLE IF EXISTS rn_vusc;
@@ -24,6 +26,7 @@ DROP TABLE IF EXISTS rn_zpusob_ochrany_objektu;
 DROP TABLE IF EXISTS rn_adresni_misto;
 DROP TABLE IF EXISTS rn_katastralni_uzemi;
 DROP TABLE IF EXISTS rn_zsj;
+DROP TABLE IF EXISTS rn_volebni_okrsek;
 
 CREATE TABLE hlavicka (
     typ_zaznamu varchar,
@@ -403,6 +406,19 @@ CREATE TABLE rn_zsj (
     deleted boolean DEFAULT false
 );
 
+CREATE TABLE rn_volebni_okrsek (
+    kod int PRIMARY KEY,
+    cislo int,
+    momc_kod int,
+    nespravny boolean,
+    obec_kod int,
+    plati_od date,
+    nz_id_globalni bigint,
+    id_trans_ruian bigint,
+    item_timestamp timestamp without time zone DEFAULT timezone('utc', now()),
+    deleted boolean DEFAULT false
+);
+
 CREATE INDEX rn_adresni_misto_adrp_psc_idx ON rn_adresni_misto (adrp_psc);
 CREATE INDEX rn_adresni_misto_stavobj_kod_idx ON rn_adresni_misto (stavobj_kod);
 CREATE INDEX rn_adresni_misto_ulice_kod_idx ON rn_adresni_misto (ulice_kod);
@@ -440,3 +456,5 @@ CREATE INDEX rn_vusc_regsoudr_kod_idx ON rn_vusc (regsoudr_kod);
 CREATE INDEX rn_zsj_katuz_kod_idx ON rn_zsj (katuz_kod);
 CREATE INDEX rn_zpusob_ochrany_objektu_stavobj_kod_idx ON rn_zpusob_ochrany_objektu (stavobj_kod);
 CREATE INDEX rn_zpusob_ochrany_pozemku_parcela_id_idx ON rn_zpusob_ochrany_pozemku (parcela_id);
+CREATE INDEX rn_volebni_okrsek_obec_kod_idx ON rn_volebni_okrsek (obec_kod);
+CREATE INDEX rn_volebni_okrsek_momc_kod_idx ON rn_volebni_okrsek (momc_kod);
