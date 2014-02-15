@@ -90,7 +90,7 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
      *                      database.
      */
     public VOConvertor(final Connection con) throws SQLException {
-        super(VolebniOkrsek.class, Namespaces.VYMENNY_FORMAT_TYPY, "VolebniOkrsek", con,
+        super(VolebniOkrsek.class, Namespaces.VOLEBNI_OKRSEK_INT_TYPY, "VolebniOkrsek", con,
                 SQL_EXISTS, SQL_INSERT, SQL_UPDATE, SQL_INSERT_NO_GIS,
                 SQL_UPDATE_NO_GIS);
     }
