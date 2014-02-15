@@ -93,8 +93,8 @@ CREATE OR REPLACE VIEW ruian_stats AS
             FROM rn_zsj
             WHERE deleted = false)
         UNION ALL SELECT 'rn_volebni_okrsek'::text,
-            rn_zsj.definicni_bod,
-            rn_zsj.hranice
+            rn_volebni_okrsek.definicni_bod,
+            rn_volebni_okrsek.hranice
             FROM rn_volebni_okrsek
             WHERE deleted = false) t
         GROUP BY t.table_name
