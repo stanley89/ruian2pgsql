@@ -21,4 +21,4 @@ truncate rn_vusc;
 truncate rn_zpusob_ochrany_objektu;
 truncate rn_zpusob_ochrany_pozemku;
 truncate rn_zsj;
-truncate rn_volebni_okrsek;
+truncate rn_vo;

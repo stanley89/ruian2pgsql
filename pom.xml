@@ -6,7 +6,7 @@
 
     <groupId>com.fordfrog</groupId>
     <artifactId>ruian2pgsql</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.1</version>
     <packaging>jar</packaging>
 
     <name>ruian2pgsql</name>
@@ -20,7 +20,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -54,9 +54,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>postgresql</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>[9.1-901-1.jdbc4,)</version>
+            <version>[9.4.1209.jre7,)</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

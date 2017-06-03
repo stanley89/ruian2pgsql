@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS rn_zpusob_ochrany_objektu;
 DROP TABLE IF EXISTS rn_adresni_misto;
 DROP TABLE IF EXISTS rn_katastralni_uzemi;
 DROP TABLE IF EXISTS rn_zsj;
-DROP TABLE IF EXISTS rn_volebni_okrsek;
+DROP TABLE IF EXISTS rn_vo;
 
 CREATE TABLE hlavicka (
     typ_zaznamu varchar,
@@ -289,6 +289,7 @@ CREATE TABLE rn_zpusob_ochrany_pozemku (
     rizeni_id bigint,
     deleted boolean DEFAULT false
 );
+CREATE INDEX rn_zpusob_ochrany_pozemku_parcela_id_idx ON rn_zpusob_ochrany_pozemku (parcela_id);
 
 CREATE TABLE rn_bonit_dily_parcel (
     parcela_id bigint,
@@ -298,6 +299,7 @@ CREATE TABLE rn_bonit_dily_parcel (
     rizeni_id bigint,
     deleted boolean DEFAULT false
 );
+CREATE INDEX rn_bonit_dily_parcel_parcela_id_idx ON rn_bonit_dily_parcel (parcela_id);
 
 CREATE TABLE rn_ulice (
     kod int PRIMARY KEY,
@@ -365,6 +367,7 @@ CREATE TABLE rn_detailni_tea (
     nz_id_globalni bigint,
     deleted boolean DEFAULT false
 );
+CREATE INDEX rn_detailni_tea_stavobj_kod_idx ON rn_detailni_tea (stavobj_kod);
 
 CREATE TABLE rn_zpusob_ochrany_objektu (
     stavobj_kod int,
@@ -374,12 +377,14 @@ CREATE TABLE rn_zpusob_ochrany_objektu (
     rizeni_id bigint,
     deleted boolean DEFAULT false
 );
+CREATE INDEX rn_zpusob_ochrany_objektu_stavobj_kod_idx ON rn_zpusob_ochrany_objektu (stavobj_kod);
 
 CREATE TABLE rn_adresni_misto (
     kod int PRIMARY KEY,
     nespravny boolean,
     adrp_psc int,
     ulice_kod int,
+    vo_kod int,
     stavobj_kod int,
     cislo_domovni int,
     cislo_orientacni_hodnota int,
@@ -440,94 +445,19 @@ CREATE TABLE rn_zsj (
     deleted boolean DEFAULT false
 );
 
-CREATE TABLE rn_volebni_okrsek (
-    kod int PRIMARY KEY,
-    cislo int,
-    momc_kod int,
-    nespravny boolean,
-    obec_kod int,
-    plati_od date,
-    nz_id_globalni bigint,
-    id_trans_ruian bigint,
+CREATE TABLE rn_vo (
+    kod int PRIMARY KEY,   -- Kód VO
+    cislo int,             -- Číslo VO unikátní v rámci obce nebo MOMC
+    nespravny boolean,     -- Příznak nesprávnosti
+    obec_kod int,          -- Nadřazená obec k VO
+    momc_kod int,          -- Nadřazený MOMC k VO
+    poznamka varchar,      -- Poznámka k VO
+    plati_od date,         -- Začátek platnosti
+    plati_do date,         -- Konec platnosti
+    id_trans_ruian bigint, -- ID transakce v RÚIAN
+    nz_id_globalni bigint, -- ID návrhu změny v ISÚI
     definicni_bod geometry,
     hranice geometry,
     item_timestamp timestamp without time zone DEFAULT timezone('utc', now()),
     deleted boolean DEFAULT false
 );
-
-CREATE INDEX rn_adresni_misto_adrp_psc_idx ON rn_adresni_misto (adrp_psc);
-CREATE INDEX rn_adresni_misto_stavobj_kod_idx ON rn_adresni_misto (stavobj_kod);
-CREATE INDEX rn_adresni_misto_ulice_kod_idx ON rn_adresni_misto (ulice_kod);
-CREATE INDEX rn_bonit_dily_parcel_parcela_id_idx ON rn_bonit_dily_parcel (parcela_id);
-CREATE INDEX rn_cast_obce_obec_kod_idx ON rn_cast_obce (obec_kod);
-CREATE INDEX rn_detailni_tea_adresni_misto_kod_idx ON rn_detailni_tea (adresni_misto_kod);
-CREATE INDEX rn_detailni_tea_stavobj_kod_idx ON rn_detailni_tea (stavobj_kod);
-CREATE INDEX rn_katastralni_uzemi_obec_kod_idx ON rn_katastralni_uzemi (obec_kod);
-CREATE INDEX rn_kraj_1960_stat_kod_idx ON rn_kraj_1960 (stat_kod);
-CREATE INDEX rn_momc_mop_kod_idx ON rn_momc (mop_kod);
-CREATE INDEX rn_momc_obec_kod_idx ON rn_momc (obec_kod);
-CREATE INDEX rn_momc_spravobv_kod_idx ON rn_momc (spravobv_kod);
-CREATE INDEX rn_mop_obec_kod_idx ON rn_mop (obec_kod);
-CREATE INDEX rn_obec_okres_kod_idx ON rn_obec (okres_kod);
-CREATE INDEX rn_obec_pou_kod_idx ON rn_obec (pou_kod);
-CREATE INDEX rn_okres_kraj_1960_kod_idx ON rn_okres (kraj_1960_kod);
-CREATE INDEX rn_okres_vusc_kod_idx ON rn_okres (vusc_kod);
-CREATE INDEX rn_orp_spravni_obec_kod_idx ON rn_orp (spravni_obec_kod);
-CREATE INDEX rn_orp_vusc_kod_idx ON rn_orp (vusc_kod);
-CREATE INDEX rn_parcela_druh_cislovani_kod_idx ON rn_parcela (druh_cislovani_kod);
-CREATE INDEX rn_parcela_druh_pozemku_kod_idx ON rn_parcela (druh_pozemku_kod);
-CREATE INDEX rn_parcela_katuz_kod_idx ON rn_parcela (katuz_kod);
-CREATE INDEX rn_parcela_zpusob_vyu_poz_kod_idx ON rn_parcela (zpusob_vyu_poz_kod);
-CREATE INDEX rn_pou_orp_kod_idx ON rn_pou (orp_kod);
-CREATE INDEX rn_pou_spravni_obec_kod_idx ON rn_pou (spravni_obec_kod);
-CREATE INDEX rn_region_soudrznosti_stat_kod_idx ON rn_region_soudrznosti (stat_kod);
-CREATE INDEX rn_spravni_obvod_obec_kod_idx ON rn_spravni_obvod (obec_kod);
-CREATE INDEX rn_spravni_obvod_spravni_momc_kod_idx ON rn_spravni_obvod (spravni_momc_kod);
-CREATE INDEX rn_stavebni_objekt_cobce_kod_idx ON rn_stavebni_objekt (cobce_kod);
-CREATE INDEX rn_stavebni_objekt_identifikacni_parcela_id_idx ON rn_stavebni_objekt (identifikacni_parcela_id);
-CREATE INDEX rn_stavebni_objekt_momc_kod_idx ON rn_stavebni_objekt (momc_kod);
-CREATE INDEX rn_stavebni_objekt_typ_kod_idx ON rn_stavebni_objekt (typ_kod);
-CREATE INDEX rn_ulice_obec_kod_idx ON rn_ulice (obec_kod);
-CREATE INDEX rn_vusc_regsoudr_kod_idx ON rn_vusc (regsoudr_kod);
-CREATE INDEX rn_zsj_katuz_kod_idx ON rn_zsj (katuz_kod);
-CREATE INDEX rn_zpusob_ochrany_objektu_stavobj_kod_idx ON rn_zpusob_ochrany_objektu (stavobj_kod);
-CREATE INDEX rn_zpusob_ochrany_pozemku_parcela_id_idx ON rn_zpusob_ochrany_pozemku (parcela_id);
-CREATE INDEX rn_volebni_okrsek_obec_kod_idx ON rn_volebni_okrsek (obec_kod);
-CREATE INDEX rn_volebni_okrsek_momc_kod_idx ON rn_volebni_okrsek (momc_kod);
-
-CREATE INDEX rn_adresni_misto_definicni_bod_idx ON rn_adresni_misto USING GIST (definicni_bod);
-CREATE INDEX rn_adresni_misto_hasici_idx ON rn_adresni_misto USING GIST (hasici);
-CREATE INDEX rn_adresni_misto_zachranka_idx ON rn_adresni_misto USING GIST (zachranka);
-CREATE INDEX rn_cast_obce_definicni_bod_idx ON rn_cast_obce USING GIST (definicni_bod);
-CREATE INDEX rn_cast_obce_hranice_idx ON rn_cast_obce USING GIST (hranice);
-CREATE INDEX rn_katastralni_uzemi_definicni_bod_idx ON rn_katastralni_uzemi USING GIST (definicni_bod);
-CREATE INDEX rn_katastralni_uzemi_hranice_idx ON rn_katastralni_uzemi USING GIST (hranice);
-CREATE INDEX rn_kraj_1960_definicni_bod_idx ON rn_kraj_1960 USING GIST (definicni_bod);
-CREATE INDEX rn_kraj_1960_hranice_idx ON rn_kraj_1960 USING GIST (hranice);
-CREATE INDEX rn_momc_definicni_bod_idx ON rn_momc USING GIST (definicni_bod);
-CREATE INDEX rn_momc_hranice_idx ON rn_momc USING GIST (hranice);
-CREATE INDEX rn_mop_definicni_bod_idx ON rn_mop USING GIST (definicni_bod);
-CREATE INDEX rn_mop_hranice_idx ON rn_mop USING GIST (hranice);
-CREATE INDEX rn_obec_definicni_bod_idx ON rn_obec USING GIST (definicni_bod);
-CREATE INDEX rn_obec_hranice_idx ON rn_obec USING GIST (hranice);
-CREATE INDEX rn_okres_definicni_bod_idx ON rn_okres USING GIST (definicni_bod);
-CREATE INDEX rn_okres_hranice_idx ON rn_okres USING GIST (hranice);
-CREATE INDEX rn_orp_definicni_bod_idx ON rn_orp USING GIST (definicni_bod);
-CREATE INDEX rn_orp_hranice_idx ON rn_orp USING GIST (hranice);
-CREATE INDEX rn_parcela_definicni_bod_idx ON rn_parcela USING GIST (definicni_bod);
-CREATE INDEX rn_parcela_hranice_idx ON rn_parcela USING GIST (hranice);
-CREATE INDEX rn_pou_definicni_bod_idx ON rn_pou USING GIST (definicni_bod);
-CREATE INDEX rn_pou_hranice_idx ON rn_pou USING GIST (hranice);
-CREATE INDEX rn_region_soudrznosti_definicni_bod_idx ON rn_region_soudrznosti USING GIST (definicni_bod);
-CREATE INDEX rn_region_soudrznosti_hranice_idx ON rn_region_soudrznosti USING GIST (hranice);
-CREATE INDEX rn_spravni_obvod_definicni_bod_idx ON rn_spravni_obvod USING GIST (definicni_bod);
-CREATE INDEX rn_spravni_obvod_hranice_idx ON rn_spravni_obvod USING GIST (hranice);
-CREATE INDEX rn_stavebni_objekt_definicni_bod_idx ON rn_stavebni_objekt USING GIST (definicni_bod);
-CREATE INDEX rn_stavebni_objekt_hranice_idx ON rn_stavebni_objekt USING GIST (hranice);
-CREATE INDEX rn_ulice_definicni_cara_idx ON rn_ulice USING GIST (definicni_cara);
-CREATE INDEX rn_vusc_definicni_bod_idx ON rn_vusc USING GIST (definicni_bod);
-CREATE INDEX rn_vusc_hranice_idx ON rn_vusc USING GIST (hranice);
-CREATE INDEX rn_zsj_definicni_bod_idx ON rn_zsj USING GIST (definicni_bod);
-CREATE INDEX rn_zsj_hranice_idx ON rn_zsj USING GIST (hranice);
-CREATE INDEX rn_volebni_okrsek_definicni_bod_idx ON rn_volebni_okrsek USING GIST (definicni_bod);
-CREATE INDEX rn_volebni_okrsek_hranice_idx ON rn_volebni_okrsek USING GIST (hranice);

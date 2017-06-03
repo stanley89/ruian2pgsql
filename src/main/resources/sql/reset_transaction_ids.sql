@@ -20,4 +20,4 @@ UPDATE rn_zpusob_ochrany_objektu SET id_trans_ruian = -1;
 UPDATE rn_adresni_misto SET id_trans_ruian = -1;
 UPDATE rn_katastralni_uzemi SET id_trans_ruian = -1;
 UPDATE rn_zsj SET id_trans_ruian = -1;
-UPDATE rn_volebni_okrsek SET id_trans_ruian = -1;
+UPDATE rn_vo SET id_trans_ruian = -1;

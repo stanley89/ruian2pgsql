@@ -29,14 +29,14 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Exchange format convertor.
+ * Special exchange format convertor.
  *
  * @author fordfrog
  */
 public class SpecialExchangeFormatConvertor extends AbstractConvertor {
 
     /**
-     * Namespace of VymennyFormat and its sub-elements.
+     * Namespace of SpecialniVymennyFormat and its sub-elements.
      */
     private static final String NAMESPACE = Namespaces.SPECIALNI_VYMENNY_FORMAT_TYPY;
     /**
@@ -72,9 +72,9 @@ public class SpecialExchangeFormatConvertor extends AbstractConvertor {
                     case "Data":
                         dataConvertor.convert(reader);
                         break;
-   //                 case "Hlavicka":
-   //                     hlavickaConvertor.convert(reader);
-   //                     break;
+//                    case "Hlavicka":
+//                        hlavickaConvertor.convert(reader);
+//                        break;
                     default:
                         XMLUtils.processUnsupported(reader);
                 }

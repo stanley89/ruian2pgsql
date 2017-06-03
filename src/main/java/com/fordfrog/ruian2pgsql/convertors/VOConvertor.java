@@ -48,38 +48,38 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
      * SQL statement for checking whether the item already exists.
      */
     private static final String SQL_EXISTS =
-            "SELECT 1 FROM rn_volebni_okrsek WHERE kod = ?";
+            "SELECT 1 FROM rn_vo WHERE kod = ?";
     /**
      * SQL statement for insertion of new item.obec_kod
      */
-    private static final String SQL_INSERT = "INSERT INTO rn_volebni_okrsek "
-            + "(cislo, nespravny, momc_kod, obec_kod, plati_od, nz_id_globalni, "
+    private static final String SQL_INSERT = "INSERT INTO rn_vo "
+            + "(cislo, nespravny, momc_kod, obec_kod, poznamka, plati_od, plati_do, nz_id_globalni, "
             + "id_trans_ruian, definicni_bod, hranice, kod) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, %FUNCTION%(?), %FUNCTION%(?), ?)";
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, %FUNCTION%(?), %FUNCTION%(?), ?)";
     /**
      * SQL statement for update of existing item.
      */
-    private static final String SQL_UPDATE = "UPDATE rn_volebni_okrsek "
+    private static final String SQL_UPDATE = "UPDATE rn_vo "
             + "SET cislo = ?, nespravny = ?, momc_kod = ?,"
-            + "obec_kod = ?, plati_od = ?, nz_id_globalni = ?, id_trans_ruian = ?,"
+            + "obec_kod = ?, poznamka = ?, plati_od = ?, plati_do = ?, nz_id_globalni = ?, id_trans_ruian = ?,"
             + "definicni_bod = %FUNCTION%(?), hranice = %FUNCTION%(?),"
             + "item_timestamp = timezone('utc', now()), deleted = false "
-            + "WHERE kod = ? AND id_trans_ruian < ?";
+            + "WHERE kod = ? AND id_trans_ruian <= ?";
     /**
      * SQL statement for insertion of new item.
      */
-    private static final String SQL_INSERT_NO_GIS = "INSERT INTO rn_volebni_okrsek "
-            + "(cislo, nespravny, momc_kod = ?, obec_kod, plati_od, nz_id_globalni, "
+    private static final String SQL_INSERT_NO_GIS = "INSERT INTO rn_vo "
+            + "(cislo, nespravny, momc_kod = ?, obec_kod, poznamka, plati_od, plati_do, nz_id_globalni, "
             + "id_trans_ruian,kod) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     /**
      * SQL statement for update of existing item.
      */
-    private static final String SQL_UPDATE_NO_GIS = "UPDATE rn_volebni_okrsek "
+    private static final String SQL_UPDATE_NO_GIS = "UPDATE rn_vo "
             + "SET cislo = ?, nespravny = ?, momc_kod = ?,"
-            + "obec_kod = ?, plati_od = ?, nz_id_globalni = ?, id_trans_ruian = ?,"
+            + "obec_kod = ?, poznamka = ?, plati_od = ?, plati_do = ?, nz_id_globalni = ?, id_trans_ruian = ?,"
             + "item_timestamp = timezone('utc', now()), deleted = false "
-            + "WHERE kod = ? AND id_trans_ruian < ?";
+            + "WHERE kod = ? AND id_trans_ruian <= ?";
 
     /**
      * Creates new instance of VOMistoConvertor.
@@ -105,7 +105,9 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
         pstmEx.setBoolean(index++, item.getNespravny());
         pstm.setInt(index++, item.getMomcKod());
         pstm.setInt(index++, item.getObecKod());
+        pstm.setString(index++, item.getPoznamka());
         pstmEx.setDate(index++, item.getPlatiOd());
+        pstmEx.setDate(index++, item.getPlatiDo());
         pstm.setLong(index++, item.getNzIdGlobalni());
         pstm.setLong(index++, item.getIdTransRuian());
 
@@ -133,26 +135,31 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
         switch (reader.getNamespaceURI()) {
             case NAMESPACE:
                 switch (reader.getLocalName()) {
-                    case "Geometrie":
-                        Utils.processGeometrie(
-                                reader, getConnection(), item, NAMESPACE);
+                    case "PlatiOd":
+                        item.setPlatiOd(
+                                Utils.parseTimestamp(reader.getElementText()));
+                        break;
+                    case "PlatiDo":
+                        item.setPlatiDo(
+                                Utils.parseTimestamp(reader.getElementText()));
+                        break;
+                    case "IdTransakce":
+                        item.setIdTransRuian(
+                                Long.parseLong(reader.getElementText()));
                         break;
                     case "GlobalniIdNavrhuZmeny":
                         item.setNzIdGlobalni(
                                 Long.parseLong(reader.getElementText()));
                         break;
-                    case "IdTransakce":
-                        item.setIdTransRuian(
-                                Long.parseLong(reader.getElementText()));
+                    case "Geometrie":
+                        Utils.processGeometrie(
+                                reader, getConnection(), item, NAMESPACE);
                         break;
                     case "Kod":
                         item.setKod(Integer.parseInt(reader.getElementText()));
                         break;
                     case "Cislo":
                         item.setCislo(Integer.parseInt(reader.getElementText()));
-                        break;
-                    case "Momc":
-                        item.setMomcKod(Utils.getMomcKod(reader, NAMESPACE));
                         break;
                     case "Nespravny":
                         item.setNespravny(
@@ -161,9 +168,12 @@ public class VOConvertor extends AbstractSaveConvertor<VolebniOkrsek> {
                     case "Obec":
                         item.setObecKod(Utils.getObecKod(reader, NAMESPACE));
                         break;
-                    case "PlatiOd":
-                        item.setPlatiOd(
-                                Utils.parseTimestamp(reader.getElementText()));
+                    case "Momc":
+                        item.setMomcKod(Utils.getMomcKod(reader, NAMESPACE));
+                        break;
+                    case "Poznamka":
+                        item.setPoznamka(
+                                reader.getElementText());
                         break;
                     default:
                         XMLUtils.processUnsupported(reader);

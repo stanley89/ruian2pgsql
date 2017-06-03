@@ -49,14 +49,14 @@ public class ZaniklyPrvekConvertor extends AbstractSaveConvertor<ZaniklyPrvek> {
     private static final String SQL_UPDATE_ADRESNI_MISTO =
             "UPDATE rn_adresni_misto SET deleted = true, "
             + "item_timestamp = timezone('utc', now()), id_trans_ruian = ? "
-            + "WHERE kod = ? AND id_trans_ruian < ?";
+            + "WHERE kod = ? AND id_trans_ruian <= ?";
     /**
      * SQL statement for marking CastObce as deleted.
      */
     private static final String SQL_UPDATE_CAST_OBCE =
             "UPDATE rn_cast_obce SET deleted = true, "
             + "item_timestamp = timezone('utc', now()), id_trans_ruian = ? "
-            + "WHERE kod = ? AND id_trans_ruian < ?";
+            + "WHERE kod = ? AND id_trans_ruian <= ?";
     /**
      * SQL statement for marking BonitDilyParcel as deleted.
      */
@@ -73,20 +73,20 @@ public class ZaniklyPrvekConvertor extends AbstractSaveConvertor<ZaniklyPrvek> {
      */
     private static final String SQL_UPDATE_PARCELA = "UPDATE rn_parcela "
             + "SET deleted = true, item_timestamp = timezone('utc', now()), "
-            + "id_trans_ruian = ? WHERE id = ? AND id_trans_ruian < ?";
+            + "id_trans_ruian = ? WHERE id = ? AND id_trans_ruian <= ?";
     /**
      * SQL statement for marking StavebniObjekt as deleted.
      */
     private static final String SQL_UPDATE_STAVEBNI_OBJEKT =
             "UPDATE rn_stavebni_objekt SET deleted = true, "
             + "item_timestamp = timezone('utc', now()), id_trans_ruian = ? "
-            + "WHERE kod = ? AND id_trans_ruian < ?";
+            + "WHERE kod = ? AND id_trans_ruian <= ?";
     /**
      * SQL statement for marking Ulice as deleted.
      */
     private static final String SQL_UPDATE_ULICE = "UPDATE rn_ulice "
             + "SET deleted = true, item_timestamp = timezone('utc', now()), "
-            + "id_trans_ruian = ? WHERE kod = ? AND id_trans_ruian < ?";
+            + "id_trans_ruian = ? WHERE kod = ? AND id_trans_ruian <= ?";
     /**
      * SQL statement for marking ZpusobOchranyObjektu as deleted.
      */
@@ -322,7 +322,7 @@ public class ZaniklyPrvekConvertor extends AbstractSaveConvertor<ZaniklyPrvek> {
 
         pstmUpdateParcela.clearParameters();
         pstmUpdateParcela.setLong(1, item.getIdTransakce());
-        pstmUpdateParcela.setInt(2, item.getPrvekId().intValue());
+        pstmUpdateParcela.setLong(2, item.getPrvekId());
         pstmUpdateParcela.setLong(3, item.getIdTransakce());
         pstmUpdateParcela.execute();
 

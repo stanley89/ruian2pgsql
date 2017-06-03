@@ -24,21 +24,22 @@ package com.fordfrog.ruian2pgsql.containers;
 import java.util.Date;
 
 /**
- * Container for Ulice information.
+ * Container for VolebniOkrsek information.
  *
  * @author fordfrog
  */
 public class VolebniOkrsek implements ItemWithDefinicniBod, ItemWithHranice {
 
     private Integer kod;
+    private Integer cislo;
     private Boolean nespravny;
     private Integer obecKod;
-    private Long idTransRuian;
-    private Date platiOd;
-    private Long nzIdGlobalni;
-    private Boolean zmenaGrafiky;
-    private Integer cislo;
     private Integer momcKod;
+    private String poznamka;
+    private Date platiOd;
+    private Date platiDo;
+    private Long idTransRuian;
+    private Long nzIdGlobalni;
     private String definicniBod;
     private String hranice;
 
@@ -48,6 +49,14 @@ public class VolebniOkrsek implements ItemWithDefinicniBod, ItemWithHranice {
 
     public void setKod(final Integer kod) {
         this.kod = kod;
+    }
+
+    public Integer getCislo() {
+        return this.cislo;
+    }
+
+    public void setCislo(int cislo) {
+        this.cislo = cislo;
     }
 
     public Boolean getNespravny() {
@@ -66,12 +75,21 @@ public class VolebniOkrsek implements ItemWithDefinicniBod, ItemWithHranice {
         this.obecKod = obecKod;
     }
 
-    public Long getIdTransRuian() {
-        return idTransRuian;
+    public Integer getMomcKod() {
+        if (momcKod==null) return 0;
+        return momcKod;
     }
 
-    public void setIdTransRuian(final Long idTransRuian) {
-        this.idTransRuian = idTransRuian;
+    public void setMomcKod(final Integer momcKod) {
+        this.momcKod = momcKod;
+    }
+
+    public String getPoznamka() {
+        return poznamka;
+    }
+
+    public void setPoznamka(final String poznamka) {
+        this.poznamka = poznamka;
     }
 
     @SuppressWarnings("ReturnOfDateField")
@@ -84,6 +102,24 @@ public class VolebniOkrsek implements ItemWithDefinicniBod, ItemWithHranice {
         this.platiOd = platiOd;
     }
 
+    @SuppressWarnings("ReturnOfDateField")
+    public Date getPlatiDo() {
+        return platiDo;
+    }
+
+    @SuppressWarnings("AssignmentToDateFieldFromParameter")
+    public void setPlatiDo(final Date platiDo) {
+        this.platiDo = platiDo;
+    }
+
+    public Long getIdTransRuian() {
+        return idTransRuian;
+    }
+
+    public void setIdTransRuian(final Long idTransRuian) {
+        this.idTransRuian = idTransRuian;
+    }
+
     public Long getNzIdGlobalni() {
         return nzIdGlobalni;
     }
@@ -92,31 +128,6 @@ public class VolebniOkrsek implements ItemWithDefinicniBod, ItemWithHranice {
         this.nzIdGlobalni = nzIdGlobalni;
     }
 
-    public Boolean getZmenaGrafiky() {
-        return zmenaGrafiky;
-    }
-
-    public void setZmenaGrafiky(final Boolean zmenaGrafiky) {
-        this.zmenaGrafiky = zmenaGrafiky;
-    }
-
-    public Integer getCislo() {
-        return this.cislo;
-    }
-            
-    public void setCislo(int cislo) {
-        this.cislo = cislo;
-    }
-
-    public Integer getMomcKod() {
-        if (momcKod==null) return 0;
-	return momcKod;
-    }
-
-    public void setMomcKod(final Integer momcKod) {
-        this.momcKod = momcKod;
-    }
-    
     @Override
     public String getDefinicniBod() {
         return definicniBod;
