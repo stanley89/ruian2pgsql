@@ -59,7 +59,6 @@ public class MainConvertor {
      * Exchange format convertor instance.
      */
     private static ExchangeFormatConvertor exchangeFormatConvertor;
-    private static SpecialExchangeFormatConvertor specialExchangeFormatConvertor;
 
     /**
      * Special exchange format convertor instance.

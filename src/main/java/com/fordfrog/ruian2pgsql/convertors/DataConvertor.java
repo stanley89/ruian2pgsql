@@ -119,10 +119,6 @@ public class DataConvertor extends AbstractConvertor {
      * Convertor for Zsj.
      */
     private final Convertor convertorZsj;
-    /**
-     * Convertor for Zsj.
-     */
-    private final Convertor convertorVolebniOkrsek;
 
     /**
      * Creates new instance of DataConvertor.
@@ -244,9 +240,6 @@ public class DataConvertor extends AbstractConvertor {
                         break;
                     case "Zsj":
                         convertorZsj.convert(reader);
-                        break;
-                    case "VolebniOkrsek":
-                        convertorVolebniOkrsek.convert(reader);
                         break;
                     default:
                         XMLUtils.processUnsupported(reader);
