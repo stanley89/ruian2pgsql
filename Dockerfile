@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:stretch
 RUN apt-get update && apt-get install -y default-jdk maven git
 run git clone https://github.com/stanley89/ruian2pgsql /app
 RUN cd /app; mvn install
