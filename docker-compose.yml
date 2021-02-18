@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  ruian2pgsql:
+    build:
+      context: .
+    volumes:
+      - ./gz:/ruian
+    depends_on:
+      - db
+    environment:
+            PSQL_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}?user=${POSTGRES_USER}&password=${POSTGRES_PASSWORD}
+  db:
+    image: postgis/postgis
+    restart: always
+    volumes:
+      - ./sql:/sql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
