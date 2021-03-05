@@ -5,7 +5,7 @@ services:
     build:
       context: .
     volumes:
-      - ./gz:/ruian
+      - ./zip:/ruian
     depends_on:
       - db
     environment:
